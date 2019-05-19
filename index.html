@@ -7,12 +7,12 @@
     let canvasHeight = 600;
     
     //Taille du sprite
-    let spriteWidth = 540; 
+    let spriteWidth = 810; 
     let spriteHeight = 1080; 
     
     //Structure du sprite
     let rows = 9; 
-    let cols = 6; 
+    let cols = 9; 
     
     //Taille/structure Sprite
     let width = spriteWidth/cols;  
@@ -22,7 +22,7 @@
     let curFrame = 0; 
     
     //Total images
-    let frameCount = 6; 
+    let frameCount = 9; 
     
     //Coordonées sprite
     let x=400;
@@ -141,13 +141,13 @@
     function initDroit(){
         posInitActivate();
         rows = 9; 
-        cols = 6; 
+        cols = 9; 
         y=350;
-        spriteWidth = 540; 
+        spriteWidth = 810; 
         spriteHeight = 1080;
         width = spriteWidth/cols;  
         height = spriteHeight/rows;
-        frameCount = 6;  
+        frameCount = 9;  
         srcX= 0; 
         srcY= 0;
     }
@@ -294,7 +294,7 @@
         setTimeout(function(){bY-=10},100)
     }
     
-    setInterval(draw,100);
+    setInterval(draw,80);
     
     
 </script>
