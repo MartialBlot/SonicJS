@@ -116,7 +116,12 @@
             animSaut();
         }
 
-        if (keyState[32] && keyState[65]){
+        if (keyState[32] && keyState[68] || keyState[32] && keyState[39]){
+            sautDroit();
+            animSaut();
+        }
+
+        if (keyState[32] && keyState[65] || keyState[32] && keyState[37]){
             sautGauche()
             animSaut();
         }
@@ -282,11 +287,11 @@
     }
 
     function animSaut(){
-        setTimeout(function(){bY+=20},100)
-        setTimeout(function(){bY+=20},200)
         setTimeout(function(){bY+=10},100)
-        setTimeout(function(){bY-=30},100)
-        setTimeout(function(){bY-=20},100)
+        setTimeout(function(){bY+=10},200)
+        setTimeout(function(){bY+=5},100)
+        setTimeout(function(){bY-=15},100)
+        setTimeout(function(){bY-=10},100)
     }
     
     setInterval(draw,100);
