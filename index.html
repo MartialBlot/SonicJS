@@ -61,7 +61,12 @@
         ctx.clearRect(x,y,width,height);
     }
     
-    //Controls
+    //Controls 
+    //(delay saut retour position initiale)
+    let posInit = true;
+    function posInitActivate (){
+        posInit = true;
+    };
     
     let keyState = {};    
     document.addEventListener('keydown',function(e){
@@ -69,7 +74,9 @@
     },true);    
     document.addEventListener('keyup',function(e){
         keyState[e.keyCode || e.which] = false;
+        if(posInit){
         initDroit()
+        }
     },true);
     
     function gameLoop() {
@@ -103,6 +110,10 @@
                 bouleRapideGauche();
                 }
         }
+        //Control Saut
+        if (keyState[32]){
+            saut()
+        }
         
         setTimeout(gameLoop, 10);
     }    
@@ -117,6 +128,7 @@
     }
     
     function initDroit(){
+        posInitActivate();
         rows = 9; 
         cols = 6; 
         spriteWidth = 540; 
@@ -243,6 +255,7 @@
     }
     
     function saut(){
+        posInit = false
         rows = 9; 
         cols = 5; 
         spriteWidth = 450; 
