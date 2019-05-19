@@ -313,11 +313,11 @@
     }
 
     function animSaut(){
-        setTimeout(function(){bY+=10},100)
-        setTimeout(function(){bY+=10},200)
-        setTimeout(function(){bY+=5},100)
-        setTimeout(function(){bY-=15},100)
-        setTimeout(function(){bY-=10},100)
+        setTimeout(function(){bY+=10; ringY-=10},100)
+        setTimeout(function(){bY+=10; ringY-=10},200)
+        setTimeout(function(){bY+=5; ringY-=5},100)
+        setTimeout(function(){bY-=15; ringY+=15},100)
+        setTimeout(function(){bY-=10; ringY+=10},100)
     }
     
     setInterval(draw,80);
