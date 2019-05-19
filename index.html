@@ -51,6 +51,22 @@
     //Creation de Sonic
     let sonic = new Image(); 
     sonic.src = "./images/sonic.png";
+    //Sprite Ring
+    let ring = new Image();
+    ring.src = "./images/ring.png";
+
+    let ringWidth = 1020; 
+    let ringHeight = 65; 
+    let ringRows = 1; 
+    let ringCols = 16; 
+    let rWidth = ringWidth/ringCols;  
+    let rHeight = ringHeight/ringRows; 
+    let ringCurFrame = 0; 
+    let ringFrameCount = 16; 
+    let ringX=800;
+    let ringY=370; 
+    let ringSrcX= 0; 
+    let ringSrcY= 0; 
     
     
     function updateFrame(){
@@ -59,6 +75,10 @@
         //Calcul coordonnées du sprite
         srcX = curFrame * width; 
         ctx.clearRect(x,y,width,height);
+
+        ringCurFrame = ++ringCurFrame % ringFrameCount;
+        ringSrcX = ringCurFrame * rWidth;
+        ctx.clearRect(ringX,ringY,rWidth,rHeight);
     }
     
     //Controls 
@@ -83,19 +103,23 @@
         //Control droit
         if (keyState[39] || keyState[68]){
             bX += 2;
+            ringX -=2;
             droite();
         }
         if (keyState[39]&& keyState[16] || keyState[68] && keyState[16]){
             bX += 3;
+            ringX -=3;
             courirDroit();
         }
         //Control gauche
         if (keyState[37] || keyState[65]){
             bX -= 2;
+            ringX +=2;
             gauche();
         }
         if (keyState[37]&& keyState[16] || keyState[65] && keyState[16]){
             bX -= 3;
+            ringX +=3;
             courirGauche();
         }    
         //Control Boule
@@ -103,10 +127,12 @@
             boule();
             if (keyState[39]&& keyState[16] || keyState[68] && keyState[16]){
                 bX += 3;
+                ringX -=3;
                 bouleRapideDroit();
                 }
             if (keyState[37]&& keyState[16] || keyState[65] && keyState[16]){
                 bX -= 3;
+                ringX +=3;
                 bouleRapideGauche();
                 }
         }
@@ -134,7 +160,7 @@
         //Rafraichissement
         updateFrame();
         ctx.drawImage(background,bX,0,1400,bY,0,-100,1200,800);
-        
+        ctx.drawImage(ring,ringSrcX, ringSrcY,rWidth,rHeight,ringX,ringY,rWidth,rHeight);
         let projection =  ctx.drawImage(sonic,srcX,srcY,width,height,x,y,width,height);
     }
     
