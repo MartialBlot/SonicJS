@@ -1,10 +1,10 @@
 
-<canvas id="sonic" style="margin: auto"></canvas>
+<canvas id="sonic"></canvas>
 
 <script>
     //Taille du Canvas
     let canvasWidth = 1200; 
-    let canvasHeight = 800;
+    let canvasHeight = 600;
     
     //Taille du sprite
     let spriteWidth = 540; 
@@ -26,7 +26,7 @@
     
     //Coordonées sprite
     let x=400;
-    let y=450; 
+    let y=350; 
     
     //x and y coordinates of the canvas to get the single frame 
     let srcX= 0; 
@@ -112,7 +112,12 @@
         }
         //Control Saut
         if (keyState[32]){
-            saut()
+            sautDroit()
+            animSaut();
+        }
+
+        if (keyState[32] && keyState[65]){
+            sautGauche()
             animSaut();
         }
         
@@ -123,7 +128,7 @@
     function draw(){
         //Rafraichissement
         updateFrame();
-        ctx.drawImage(background,bX,0,1400,bY,0,0,1200,800);
+        ctx.drawImage(background,bX,0,1400,bY,0,-100,1200,800);
         
         let projection =  ctx.drawImage(sonic,srcX,srcY,width,height,x,y,width,height);
     }
@@ -132,13 +137,12 @@
         posInitActivate();
         rows = 9; 
         cols = 6; 
+        y=350;
         spriteWidth = 540; 
         spriteHeight = 1080;
         width = spriteWidth/cols;  
         height = spriteHeight/rows;
-        frameCount = 6; 
-        x=400;
-        y=450; 
+        frameCount = 6;  
         srcX= 0; 
         srcY= 0;
     }
@@ -146,13 +150,12 @@
     function initGauche(){
         rows = 9; 
         cols = 6; 
+        y=350;
         spriteWidth = 540; 
         spriteHeight = 1080;
         width = spriteWidth/cols;  
         height = spriteHeight/rows;
-        frameCount = 6; 
-        x=400;
-        y=450; 
+        frameCount = 6;  
         srcX= 0; 
         srcY= 715;
     }
@@ -160,13 +163,12 @@
     function droite(){
         rows = 9; 
         cols = 3;
+        y=350;
         spriteWidth = 288; 
         spriteHeight = 1080; 
         width = spriteWidth/cols;  
         height = spriteHeight/rows; 
         frameCount = 3;
-        x=400;
-        y=450; 
         srcX= 0; 
         srcY= 130;
     }
@@ -174,13 +176,12 @@
     function gauche(){
         rows = 9; 
         cols = 3;
+        y=350;
         spriteWidth = 285; 
         spriteHeight = 1080; 
         width = spriteWidth/cols;  
         height = spriteHeight/rows; 
-        frameCount = 3;
-        x=400;
-        y=450; 
+        frameCount = 3; 
         srcX= 0; 
         srcY= 590;
     }
@@ -188,13 +189,12 @@
     function boule(){
         rows = 9; 
         cols = 4;
+        y=410;
         spriteWidth = 289; 
         spriteHeight = 600; 
         width = spriteWidth/cols;  
         height = spriteHeight/rows; 
-        frameCount = 4;
-        x=400;
-        y=510; 
+        frameCount = 4; 
         srcX= 0; 
         srcY= 380;
     }
@@ -202,13 +202,12 @@
     function bouleRapideDroit(){
         rows = 9; 
         cols = 3;
+        y=399;
         spriteWidth = 330; 
         spriteHeight = 630; 
         width = spriteWidth/cols;  
         height = spriteHeight/rows; 
         frameCount = 3;
-        x=400;
-        y=500; 
         srcX= 0; 
         srcY= 980;
     }
@@ -216,13 +215,12 @@
     function bouleRapideGauche(){
         rows = 9; 
         cols = 3;
+        y=399;
         spriteWidth = 330; 
         spriteHeight = 630; 
         width = spriteWidth/cols;  
         height = spriteHeight/rows; 
         frameCount = 3;
-        x=400;
-        y=500; 
         srcX= 0; 
         srcY= 1065;
     }
@@ -230,13 +228,12 @@
     function courirDroit(){
         rows = 9; 
         cols = 4; 
+        y=350;
         spriteWidth = 400; 
         spriteHeight = 1080;
         width = spriteWidth/cols;  
         height = spriteHeight/rows;
-        frameCount = 4; 
-        x=400;
-        y=450; 
+        frameCount = 4;  
         srcX= 0; 
         srcY= 258;
     }
@@ -244,30 +241,43 @@
     function courirGauche(){
         rows = 9; 
         cols = 4; 
+        y=350;
         spriteWidth = 440; 
         spriteHeight = 1080;
         width = spriteWidth/cols;  
         height = spriteHeight/rows;
-        frameCount = 4; 
-        x=400;
-        y=450; 
+        frameCount = 4;  
         srcX= 0;
         srcY= 850; 
     }
     
-    function saut(){
+    function sautDroit(){
         posInit = false
         rows = 9; 
         cols = 5; 
+        y=350;
         spriteWidth = 450; 
         spriteHeight = 1100;
         width = spriteWidth/cols;  
         height = spriteHeight/rows;
-        frameCount = 4; 
-        x=400;
-        y=450; 
+        frameCount = 4;  
         srcX= 0; 
         srcY= 456;
+        setTimeout(initDroit,500)
+    }
+
+    function sautGauche(){
+        posInit = false
+        rows = 9; 
+        cols = 5; 
+        y=350;
+        spriteWidth = 450; 
+        spriteHeight = 1070;
+        width = spriteWidth/cols;  
+        height = spriteHeight/rows;
+        frameCount = 4;  
+        srcX= 0; 
+        srcY= 1157;
         setTimeout(initDroit,500)
     }
 
