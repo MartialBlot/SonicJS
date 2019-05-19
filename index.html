@@ -34,7 +34,7 @@
     
     //Coordonnées background
     let bX = 0;
-    let bY = 0;
+    let bY = 1080;
     let tBX = bX;
     let tBY = bY;
     
@@ -113,6 +113,7 @@
         //Control Saut
         if (keyState[32]){
             saut()
+            animSaut();
         }
         
         setTimeout(gameLoop, 10);
@@ -122,7 +123,7 @@
     function draw(){
         //Rafraichissement
         updateFrame();
-        ctx.drawImage(background,bX,bY,1400,1080,0,0,1200,800);
+        ctx.drawImage(background,bX,0,1400,bY,0,0,1200,800);
         
         let projection =  ctx.drawImage(sonic,srcX,srcY,width,height,x,y,width,height);
     }
@@ -268,6 +269,14 @@
         srcX= 0; 
         srcY= 456;
         setTimeout(initDroit,500)
+    }
+
+    function animSaut(){
+        setTimeout(function(){bY+=20},100)
+        setTimeout(function(){bY+=20},200)
+        setTimeout(function(){bY+=10},100)
+        setTimeout(function(){bY-=30},100)
+        setTimeout(function(){bY-=20},100)
     }
     
     setInterval(draw,100);
