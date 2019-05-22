@@ -38,10 +38,9 @@
     let bY = 1080;
     let tBX = bX;
     let tBY = bY;
-
+    
     //sensibilité du saut
     let oneJump = true;
-    
     let canvas = document.getElementById('sonic');
     
     //Propriété du Canvas
@@ -59,7 +58,8 @@
     let ring = new Image();
     ring.src = "./images/ring.png";
     let collisionRing = true;
-
+    let ringSound;
+    
     let ringWidth = 1020; 
     let ringHeight = 65; 
     let ringRows = 1; 
@@ -80,7 +80,7 @@
         //Calcul coordonnées du sprite
         srcX = curFrame * width; 
         ctx.clearRect(x,y,width,height);
-
+        
         ringCurFrame = ++ringCurFrame % ringFrameCount;
         ringSrcX = ringCurFrame * rWidth;
         ctx.clearRect(ringX,ringY,rWidth,rHeight);
@@ -101,11 +101,17 @@
         keyState[e.keyCode || e.which] = false;
         oneJump = true;
         if(posInit){
-        initDroit()
+            initDroit()
         }
     },true);
     
     function gameLoop() {
+        //Collision rings
+        if((x+50) == ringX && collisionRing || (x+50)> ringX &&collisionRing ){
+            collisionRing = false;
+            ringSound = new Audio('./sounds/ring.mp3');
+            ringSound.play();
+        }
         //Control droit
         if (keyState[39] || keyState[68]){
             bX += 2;
@@ -135,39 +141,35 @@
                 bX += 3;
                 ringX -=3;
                 bouleRapideDroit();
-                }
+            }
             if (keyState[37]&& keyState[16] || keyState[65] && keyState[16]){
                 bX -= 3;
                 ringX +=3;
                 bouleRapideGauche();
-                }
-        }
-        //Collision rings
-        if((x+50) == ringX){
-            collisionRing = false;
+            }
         }
         //Control Saut
         if (keyState[32]){
             while(oneJump){
-            oneJump = false;
-            sautDroit();
-            animSaut();
+                oneJump = false;
+                sautDroit();
+                animSaut();
             }
         }
-
+        
         if (keyState[32] && keyState[68] || keyState[32] && keyState[39]){
             while(oneJump){
-            oneJump = false;
-            sautDroit();
-            animSaut();
+                oneJump = false;
+                sautDroit();
+                animSaut();
             }
         }
-
+        
         if (keyState[32] && keyState[65] || keyState[32] && keyState[37]){
             while(oneJump){
-            oneJump = false;
-            sautGauche();
-            animSaut();
+                oneJump = false;
+                sautGauche();
+                animSaut();
             }
         }
         
@@ -180,7 +182,7 @@
         updateFrame();
         ctx.drawImage(background,bX,0,1400,bY,0,-100,1200,800);
         if(collisionRing){
-        ctx.drawImage(ring,ringSrcX, ringSrcY,rWidth,rHeight,ringX,ringY,rWidth,rHeight);
+            ctx.drawImage(ring,ringSrcX, ringSrcY,rWidth,rHeight,ringX,ringY,rWidth,rHeight);
         }
         let projection =  ctx.drawImage(sonic,srcX,srcY,width,height,x,y,width,height);
     }
@@ -250,7 +252,7 @@
         srcX= 0; 
         srcY= 380;
     }
-
+    
     function bouleRapideDroit(){
         rows = 9; 
         cols = 3;
@@ -263,7 +265,7 @@
         srcX= 0; 
         srcY= 980;
     }
-
+    
     function bouleRapideGauche(){
         rows = 9; 
         cols = 3;
@@ -317,7 +319,7 @@
         srcY= 456;
         setTimeout(initDroit,500)
     }
-
+    
     function sautGauche(){
         posInit = false
         rows = 9; 
@@ -332,23 +334,20 @@
         srcY= 1157;
         setTimeout(initDroit,500)
     }
-
+    
     function animSaut(){
         setTimeout(function(){
-            bY+=10; ringY-=10
+            bY-=100; ringY+=100
         },100)
         setTimeout(function(){
-            bY+=10; ringY-=10
-        },200)
+            bY-=100; ringY+=100
+        },150)
         setTimeout(function(){
-            bY+=5; ringY-=5
-        },100)
+            bY+=100; ringY-=100
+        },300)
         setTimeout(function(){
-            bY-=15; ringY+=15
-        },100)
-        setTimeout(function(){
-            bY-=10; ringY+=10
-        },100)
+            bY+=100; ringY-=100
+        },350)
     }
     
     setInterval(draw,80);
