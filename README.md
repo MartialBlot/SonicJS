@@ -11,9 +11,7 @@ Sonic like full JS
 
 ## Main Big Bugs
 
-- Right Initial position when one key is up is on.
-- No collision.
-- Jump with space indefinitly. lock, but sonic isn't a bird.
+A lot.
 
 
 
