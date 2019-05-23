@@ -2,7 +2,6 @@
 <canvas id="sonic"></canvas>
 
 <script>
-    let jump = true;
     //Taille du Canvas
     let canvasWidth = 1200; 
     let canvasHeight = 600;
@@ -340,14 +339,20 @@
             bY-=100; ringY+=100
         },100)
         setTimeout(function(){
-            bY-=100; ringY+=100
+            bY-=50; ringY+=100
         },150)
         setTimeout(function(){
-            bY+=100; ringY-=100
+            bY-=50; ringY+=50
+        },250)
+        setTimeout(function(){
+            bY+=50; ringY-=50
         },300)
         setTimeout(function(){
             bY+=100; ringY-=100
         },350)
+        setTimeout(function(){
+            bY+=50; ringY-=100
+        },400)
     }
     
     setInterval(draw,80);
