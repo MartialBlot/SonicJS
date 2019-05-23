@@ -38,6 +38,8 @@
     let tBX = bX;
     let tBY = bY;
     
+    //sensibilité du saut
+    let oneJump = true;
     let canvas = document.getElementById('sonic');
     
     //Propriété du Canvas
@@ -54,7 +56,9 @@
     //Sprite Ring
     let ring = new Image();
     ring.src = "./images/ring.png";
-
+    let collisionRing = true;
+    let ringSound;
+    
     let ringWidth = 1020; 
     let ringHeight = 65; 
     let ringRows = 1; 
@@ -75,7 +79,7 @@
         //Calcul coordonnées du sprite
         srcX = curFrame * width; 
         ctx.clearRect(x,y,width,height);
-
+        
         ringCurFrame = ++ringCurFrame % ringFrameCount;
         ringSrcX = ringCurFrame * rWidth;
         ctx.clearRect(ringX,ringY,rWidth,rHeight);
@@ -83,10 +87,8 @@
     
     //Controls 
     //(delay saut retour position initiale)
-    let posInit = true;
-    function posInitActivate (){
-        posInit = true;
-    };
+    let initRight = true;
+    let initLeft = false;
     
     let keyState = {};    
     document.addEventListener('keydown',function(e){
@@ -94,32 +96,47 @@
     },true);    
     document.addEventListener('keyup',function(e){
         keyState[e.keyCode || e.which] = false;
-        if(posInit){
-        initDroit()
-        }
+        oneJump = true;
+        if(initRight){
+            initDroit();
+        } else { initGauche(); }
     },true);
     
     function gameLoop() {
+        //Collision rings
+        if((x+50) == ringX && collisionRing || (x+50)> ringX &&collisionRing ){
+            collisionRing = false;
+            ringSound = new Audio('./sounds/ring.mp3');
+            ringSound.play();
+        }
         //Control droit
         if (keyState[39] || keyState[68]){
             bX += 2;
             ringX -=2;
+            initRight = true;
+            initLeft = false;
             droite();
         }
         if (keyState[39]&& keyState[16] || keyState[68] && keyState[16]){
             bX += 3;
             ringX -=3;
+            initRight = true;
+            initLeft = false;
             courirDroit();
         }
         //Control gauche
         if (keyState[37] || keyState[65]){
             bX -= 2;
             ringX +=2;
+            initRight = false;
+            initLeft = true;
             gauche();
         }
         if (keyState[37]&& keyState[16] || keyState[65] && keyState[16]){
             bX -= 3;
             ringX +=3;
+            initRight = false;
+            initLeft = true;
             courirGauche();
         }    
         //Control Boule
@@ -129,27 +146,41 @@
                 bX += 3;
                 ringX -=3;
                 bouleRapideDroit();
-                }
+            }
             if (keyState[37]&& keyState[16] || keyState[65] && keyState[16]){
                 bX -= 3;
                 ringX +=3;
                 bouleRapideGauche();
-                }
+            }
         }
         //Control Saut
         if (keyState[32]){
-            sautDroit()
-            animSaut();
+            while(oneJump){
+                oneJump = false;
+                if(initRight){
+                sautDroit();
+                animSaut();
+                } else { 
+                    sautGauche();
+                    animSaut();
+                }
+            }
         }
-
+        
         if (keyState[32] && keyState[68] || keyState[32] && keyState[39]){
-            sautDroit();
-            animSaut();
+            while(oneJump){
+                oneJump = false;
+                sautDroit();
+                animSaut();
+            }
         }
-
+        
         if (keyState[32] && keyState[65] || keyState[32] && keyState[37]){
-            sautGauche()
-            animSaut();
+            while(oneJump){
+                oneJump = false;
+                sautGauche();
+                animSaut();
+            }
         }
         
         setTimeout(gameLoop, 10);
@@ -160,12 +191,13 @@
         //Rafraichissement
         updateFrame();
         ctx.drawImage(background,bX,0,1400,bY,0,-100,1200,800);
-        ctx.drawImage(ring,ringSrcX, ringSrcY,rWidth,rHeight,ringX,ringY,rWidth,rHeight);
+        if(collisionRing){
+            ctx.drawImage(ring,ringSrcX, ringSrcY,rWidth,rHeight,ringX,ringY,rWidth,rHeight);
+        }
         let projection =  ctx.drawImage(sonic,srcX,srcY,width,height,x,y,width,height);
     }
     
     function initDroit(){
-        posInitActivate();
         rows = 9; 
         cols = 9; 
         y=350;
@@ -229,7 +261,7 @@
         srcX= 0; 
         srcY= 380;
     }
-
+    
     function bouleRapideDroit(){
         rows = 9; 
         cols = 3;
@@ -242,7 +274,7 @@
         srcX= 0; 
         srcY= 980;
     }
-
+    
     function bouleRapideGauche(){
         rows = 9; 
         cols = 3;
@@ -283,7 +315,6 @@
     }
     
     function sautDroit(){
-        posInit = false
         rows = 9; 
         cols = 5; 
         y=350;
@@ -294,11 +325,10 @@
         frameCount = 4;  
         srcX= 0; 
         srcY= 456;
-        setTimeout(initDroit,500)
+        setTimeout(initDroit,500);
     }
-
+    
     function sautGauche(){
-        posInit = false
         rows = 9; 
         cols = 5; 
         y=350;
@@ -309,15 +339,28 @@
         frameCount = 4;  
         srcX= 0; 
         srcY= 1157;
-        setTimeout(initDroit,500)
+        setTimeout(initGauche,500);
     }
-
+    
     function animSaut(){
-        setTimeout(function(){bY+=10; ringY-=10},100)
-        setTimeout(function(){bY+=10; ringY-=10},200)
-        setTimeout(function(){bY+=5; ringY-=5},100)
-        setTimeout(function(){bY-=15; ringY+=15},100)
-        setTimeout(function(){bY-=10; ringY+=10},100)
+        setTimeout(function(){
+            bY-=100; ringY+=100
+        },100)
+        setTimeout(function(){
+            bY-=50; ringY+=100
+        },150)
+        setTimeout(function(){
+            bY-=50; ringY+=50
+        },250)
+        setTimeout(function(){
+            bY+=50; ringY-=50
+        },300)
+        setTimeout(function(){
+            bY+=100; ringY-=100
+        },350)
+        setTimeout(function(){
+            bY+=50; ringY-=100
+        },400)
     }
     
     setInterval(draw,80);
