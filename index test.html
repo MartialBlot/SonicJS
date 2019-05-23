@@ -24,35 +24,35 @@
     //x and y coordinates of the canvas to get the single frame 
     let srcX= 0; 
     let srcY= 0; 
-
+    
     //Coordonnées background
     let bX = 0;
     let bY = 1080;
     let tBX = bX;
     let tBY = bY;
-
+    
     //sensibilité du saut
     let oneJump = true;
     let canvas = document.getElementById('sonic');
-
+    
     //Propriété du Canvas
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
     let background = new Image();
     background.src = "./images/maptest.png";
-
+    
     let ctx = canvas.getContext("2d");
-
+    
     //Creation de Sonic
     let sonic = new Image(); 
     sonic.src = "./images/sonic.png";
-
+    
     //Sprite Ring
     let ring = new Image();
     ring.src = "./images/ring.png";
     let collisionRing = true;
     let ringSound;
-
+    
     let ringWidth = 1020; 
     let ringHeight = 65; 
     let ringRows = 1; 
@@ -65,11 +65,11 @@
     let ringY=370; 
     let ringSrcX= 0; 
     let ringSrcY= 0; 
-
+    
     //Sprite DR.Robotnik
     let robotnik = new Image();
     robotnik.src = "./images/dr-robotnik1.png"; 
-
+    
     let robotnikWidth = 1320; 
     let robotnikHeight = 170; 
     let robotnikRows = 1; 
@@ -78,18 +78,20 @@
     let rkHeight = robotnikHeight/robotnikRows; 
     let robotnikCurFrame = 0; 
     let robotnikFrameCount = 6; 
-    let robotnikX=800;
+    let robotnikX=900;
     let robotnikY=200; 
     let robotnikSrcX= 0; 
     let robotnikSrcY= 90;
-
+    let posRobotnik = true
+    let cX;
+    
     function updateFrame(){
         //Rafraichissement 
         curFrame = ++curFrame % frameCount; 
         //Calcul coordonnées du sprite
         srcX = curFrame * width; 
         ctx.clearRect(x,y,width,height);
-
+        
         robotnikCurFrame = ++robotnikCurFrame % robotnikFrameCount;
         robotnikSrcX = robotnikCurFrame * rkWidth;
         ctx.clearRect(robotnikX,robotnikY,rkWidth,rkHeight);
@@ -172,8 +174,8 @@
             while(oneJump){
                 oneJump = false;
                 if(initRight){
-                sautDroit();
-                animSaut();
+                    sautDroit();
+                    animSaut();
                 } else { 
                     sautGauche();
                     animSaut();
@@ -205,10 +207,14 @@
         //Rafraichissement
         updateFrame();
         ctx.drawImage(background,bX,0,1400,bY,0,-100,1200,800);
+        
         ctx.drawImage(robotnik,robotnikSrcX, robotnikSrcY,rkWidth,rkHeight,robotnikX,robotnikY,rkWidth,rkHeight);
+        animRobotnik()
+        
         if(collisionRing){
             ctx.drawImage(ring,ringSrcX, ringSrcY,rWidth,rHeight,ringX,ringY,rWidth,rHeight);
         }
+        
         let projection =  ctx.drawImage(sonic,srcX,srcY,width,height,x,y,width,height);
     }
     
@@ -376,6 +382,48 @@
         setTimeout(function(){
             bY+=50; ringY-=100
         },400)
+    }
+    
+    function animRobotnik(){
+        if(posRobotnik){
+            robotnikWidth = 1320; 
+            robotnikHeight = 170; 
+            robotnikRows = 1; 
+            robotnikCols = 6; 
+            rkWidth = robotnikWidth/robotnikCols;  
+            rkHeight = robotnikHeight/robotnikRows; 
+            robotnikCurFrame = 0; 
+            robotnikFrameCount = 6; 
+            // robotnikX=900;
+            robotnikY=200; 
+            robotnikSrcX= 0; 
+            robotnikSrcY= 90;
+            
+            robotnikX-=20
+            if(robotnikX===500){
+                robotnikTemp = robotnikX
+                posRobotnik = false;
+                robotnikX=robotnikTemp;
+            }
+        }
+        else if (!posRobotnik) { 
+            robotnikWidth = 1320; 
+            robotnikHeight = 170; 
+            robotnikRows = 1; 
+            robotnikCols = 6; 
+            rkWidth = robotnikWidth/robotnikCols;  
+            rkHeight = robotnikHeight/robotnikRows; 
+            robotnikCurFrame = 0; 
+            robotnikFrameCount = 6; 
+            robotnikY=200; 
+            robotnikSrcX= 0; 
+            robotnikSrcY= 720;
+            
+            robotnikX+=20
+            if(robotnikX===900){
+                posRobotnik = true;
+            }
+        }
     }
     
     setInterval(draw,80);
