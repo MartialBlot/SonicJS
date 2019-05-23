@@ -5,60 +5,54 @@
     //Taille du Canvas
     let canvasWidth = 1200; 
     let canvasHeight = 600;
-    
     //Taille du sprite
     let spriteWidth = 810; 
     let spriteHeight = 1080; 
-    
     //Structure du sprite
     let rows = 9; 
     let cols = 9; 
-    
     //Taille/structure Sprite
     let width = spriteWidth/cols;  
     let height = spriteHeight/rows; 
-    
     //Premiere image
     let curFrame = 0; 
-    
     //Total images
     let frameCount = 9; 
-    
     //Coordonées sprite
     let x=400;
     let y=350; 
-    
     //x and y coordinates of the canvas to get the single frame 
     let srcX= 0; 
     let srcY= 0; 
-    
+
     //Coordonnées background
     let bX = 0;
     let bY = 1080;
     let tBX = bX;
     let tBY = bY;
-    
+
     //sensibilité du saut
     let oneJump = true;
     let canvas = document.getElementById('sonic');
-    
+
     //Propriété du Canvas
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
     let background = new Image();
     background.src = "./images/maptest.png";
-    
+
     let ctx = canvas.getContext("2d");
-    
+
     //Creation de Sonic
     let sonic = new Image(); 
     sonic.src = "./images/sonic.png";
+
     //Sprite Ring
     let ring = new Image();
     ring.src = "./images/ring.png";
     let collisionRing = true;
     let ringSound;
-    
+
     let ringWidth = 1020; 
     let ringHeight = 65; 
     let ringRows = 1; 
@@ -67,18 +61,38 @@
     let rHeight = ringHeight/ringRows; 
     let ringCurFrame = 0; 
     let ringFrameCount = 16; 
-    let ringX=800;
+    let ringX=1200;
     let ringY=370; 
     let ringSrcX= 0; 
     let ringSrcY= 0; 
-    
-    
+
+    //Sprite DR.Robotnik
+    let robotnik = new Image();
+    robotnik.src = "./images/dr-robotnik1.png"; 
+
+    let robotnikWidth = 1320; 
+    let robotnikHeight = 170; 
+    let robotnikRows = 1; 
+    let robotnikCols = 6; 
+    let rkWidth = robotnikWidth/robotnikCols;  
+    let rkHeight = robotnikHeight/robotnikRows; 
+    let robotnikCurFrame = 0; 
+    let robotnikFrameCount = 6; 
+    let robotnikX=800;
+    let robotnikY=200; 
+    let robotnikSrcX= 0; 
+    let robotnikSrcY= 90;
+
     function updateFrame(){
         //Rafraichissement 
         curFrame = ++curFrame % frameCount; 
         //Calcul coordonnées du sprite
         srcX = curFrame * width; 
         ctx.clearRect(x,y,width,height);
+
+        robotnikCurFrame = ++robotnikCurFrame % robotnikFrameCount;
+        robotnikSrcX = robotnikCurFrame * rkWidth;
+        ctx.clearRect(robotnikX,robotnikY,rkWidth,rkHeight);
         
         ringCurFrame = ++ringCurFrame % ringFrameCount;
         ringSrcX = ringCurFrame * rWidth;
@@ -191,6 +205,7 @@
         //Rafraichissement
         updateFrame();
         ctx.drawImage(background,bX,0,1400,bY,0,-100,1200,800);
+        ctx.drawImage(robotnik,robotnikSrcX, robotnikSrcY,rkWidth,rkHeight,robotnikX,robotnikY,rkWidth,rkHeight);
         if(collisionRing){
             ctx.drawImage(ring,ringSrcX, ringSrcY,rWidth,rHeight,ringX,ringY,rWidth,rHeight);
         }
