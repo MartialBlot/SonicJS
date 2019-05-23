@@ -87,10 +87,8 @@
     
     //Controls 
     //(delay saut retour position initiale)
-    let posInit = true;
-    function posInitActivate (){
-        posInit = true;
-    };
+    let initRight = true;
+    let initLeft = false;
     
     let keyState = {};    
     document.addEventListener('keydown',function(e){
@@ -99,9 +97,9 @@
     document.addEventListener('keyup',function(e){
         keyState[e.keyCode || e.which] = false;
         oneJump = true;
-        if(posInit){
-            initDroit()
-        }
+        if(initRight){
+            initDroit();
+        } else { initGauche(); }
     },true);
     
     function gameLoop() {
@@ -115,22 +113,30 @@
         if (keyState[39] || keyState[68]){
             bX += 2;
             ringX -=2;
+            initRight = true;
+            initLeft = false;
             droite();
         }
         if (keyState[39]&& keyState[16] || keyState[68] && keyState[16]){
             bX += 3;
             ringX -=3;
+            initRight = true;
+            initLeft = false;
             courirDroit();
         }
         //Control gauche
         if (keyState[37] || keyState[65]){
             bX -= 2;
             ringX +=2;
+            initRight = false;
+            initLeft = true;
             gauche();
         }
         if (keyState[37]&& keyState[16] || keyState[65] && keyState[16]){
             bX -= 3;
             ringX +=3;
+            initRight = false;
+            initLeft = true;
             courirGauche();
         }    
         //Control Boule
@@ -151,8 +157,13 @@
         if (keyState[32]){
             while(oneJump){
                 oneJump = false;
+                if(initRight){
                 sautDroit();
                 animSaut();
+                } else { 
+                    sautGauche();
+                    animSaut();
+                }
             }
         }
         
@@ -187,7 +198,6 @@
     }
     
     function initDroit(){
-        posInitActivate();
         rows = 9; 
         cols = 9; 
         y=350;
@@ -305,7 +315,6 @@
     }
     
     function sautDroit(){
-        posInit = false
         rows = 9; 
         cols = 5; 
         y=350;
@@ -316,11 +325,10 @@
         frameCount = 4;  
         srcX= 0; 
         srcY= 456;
-        setTimeout(initDroit,500)
+        setTimeout(initDroit,500);
     }
     
     function sautGauche(){
-        posInit = false
         rows = 9; 
         cols = 5; 
         y=350;
@@ -331,7 +339,7 @@
         frameCount = 4;  
         srcX= 0; 
         srcY= 1157;
-        setTimeout(initDroit,500)
+        setTimeout(initGauche,500);
     }
     
     function animSaut(){
