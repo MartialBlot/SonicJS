@@ -83,7 +83,8 @@
     let robotnikSrcX= 0; 
     let robotnikSrcY= 90;
     let posRobotnik = true
-    let cX;
+    let toursRobotnik = 0;
+
     
     function updateFrame(){
         //Rafraichissement 
@@ -208,8 +209,8 @@
         updateFrame();
         ctx.drawImage(background,bX,0,1400,bY,0,-100,1200,800);
         
+        animRobotnik();
         ctx.drawImage(robotnik,robotnikSrcX, robotnikSrcY,rkWidth,rkHeight,robotnikX,robotnikY,rkWidth,rkHeight);
-        animRobotnik()
         
         if(collisionRing){
             ctx.drawImage(ring,ringSrcX, ringSrcY,rWidth,rHeight,ringX,ringY,rWidth,rHeight);
@@ -386,47 +387,30 @@
     
     function animRobotnik(){
         if(posRobotnik){
-            robotnikWidth = 1320; 
-            robotnikHeight = 170; 
-            robotnikRows = 1; 
-            robotnikCols = 6; 
-            rkWidth = robotnikWidth/robotnikCols;  
-            rkHeight = robotnikHeight/robotnikRows; 
-            robotnikCurFrame = 0; 
-            robotnikFrameCount = 6; 
-            // robotnikX=900;
-            robotnikY=200; 
-            robotnikSrcX= 0; 
             robotnikSrcY= 90;
-            
-            robotnikX-=20
-            if(robotnikX===500){
-                robotnikTemp = robotnikX
+            toursRobotnik += 1;
+            robotnikX -= 20;
+            console.log(toursRobotnik)
+            if(toursRobotnik >= 20){
+                // robotnikTemp = robotnikX
                 posRobotnik = false;
-                robotnikX=robotnikTemp;
+                toursRobotnik = 0;
+                // robotnikX=robotnikTemp;
             }
         }
         else if (!posRobotnik) { 
-            robotnikWidth = 1320; 
-            robotnikHeight = 170; 
-            robotnikRows = 1; 
-            robotnikCols = 6; 
-            rkWidth = robotnikWidth/robotnikCols;  
-            rkHeight = robotnikHeight/robotnikRows; 
-            robotnikCurFrame = 0; 
-            robotnikFrameCount = 6; 
-            robotnikY=200; 
-            robotnikSrcX= 0; 
             robotnikSrcY= 720;
-            
-            robotnikX+=20
-            if(robotnikX===900){
+            robotnikX += 20;
+            toursRobotnik += 1;
+            console.log(toursRobotnik)
+            if(toursRobotnik>= 20){
                 posRobotnik = true;
+                toursRobotnik = 0;
             }
         }
     }
     
-    setInterval(draw,80);
+    setInterval(draw, 80);
     
     
 </script>
